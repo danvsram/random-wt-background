@@ -2,13 +2,17 @@ import cors from 'cors';
 import { config } from 'dotenv';
 import express, { Response } from 'express';
 
-const randomGifs = Object.values(config().parsed!);
+config();
+
+const randomGifs = Object.entries(process.env)
+  .filter(([key]) => key.startsWith('BG__'))
+  .map(([, value]) => value);
 const app = express();
 app.use(cors());
 
 app.get('/', (_request, response: Response) => {
   const randomIndex = Math.floor(Math.random() * randomGifs.length);
-  response.redirect(randomGifs[randomIndex]);
+  response.redirect(randomGifs[randomIndex]!);
 });
 
 const PORT = process.env.PORT || 4000;
