@@ -1,0 +1,10 @@
+{
+  "extends": "@mkvlrn/tsconfig",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "build",
+    "baseUrl": ".",
+    "paths": { "#/*": ["src/*"] }
+  },
+  "include": ["src", "vite.config.ts", "vitest.setup.ts"]
+}
