@@ -8,11 +8,11 @@ app.get('/', async (request: Request, response: Response) => {
   const { gist } = request.query;
 
   try {
+    console.log(gist);
     const raw = await fetch(`https://api.github.com/gists/${gist}`);
     const rawJson = await raw.json();
     const gifs = JSON.parse(rawJson.files['gifs.json'].content);
     const gifsArray = Object.values(gifs) as string[];
-    console.log(gifsArray);
 
     const randomIndex = Math.floor(Math.random() * gifsArray.length);
     response.redirect(gifsArray[randomIndex]);
