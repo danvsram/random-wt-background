@@ -1,12 +1,8 @@
 import cors from 'cors';
-import { config } from 'dotenv';
 import express, { Response } from 'express';
+import gifs from '#/gifs.json' assert { type: 'json' };
 
-config();
-
-const randomGifs = Object.entries(process.env)
-  .filter(([key]) => key.startsWith('BG__'))
-  .map(([, value]) => value);
+const randomGifs = Object.values(gifs).map((value) => value);
 const app = express();
 app.use(cors());
 
