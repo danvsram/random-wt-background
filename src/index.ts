@@ -6,6 +6,7 @@ app.use(cors());
 
 app.get('/', async (request: Request, response: Response) => {
   const { gist } = request.query;
+  console.log(gist);
 
   try {
     const raw = await fetch(`https://api.github.com/gists/${gist}`);
