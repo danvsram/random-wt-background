@@ -16,8 +16,8 @@ app.get('/', async (request: Request, response: Response) => {
 
     const randomIndex = Math.floor(Math.random() * gifsArray.length);
     response.redirect(gifsArray[randomIndex]);
-  } catch {
-    console.error(`Gist ${gist} not found`);
+  } catch (error) {
+    console.log(error);
     response.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
   }
 });
