@@ -1,14 +1,23 @@
 import cors from 'cors';
-import express, { Response } from 'express';
-import gifs from '#/gifs.json' assert { type: 'json' };
+import express, { Request, Response } from 'express';
 
-const randomGifs = Object.values(gifs).map((value) => value);
 const app = express();
 app.use(cors());
 
-app.get('/', (_request, response: Response) => {
-  const randomIndex = Math.floor(Math.random() * randomGifs.length);
-  response.redirect(randomGifs[randomIndex]!);
+app.get('/', async (request: Request, response: Response) => {
+  const { gist } = request.query;
+
+  try {
+    const raw = await fetch(`https://api.github.com/gists/${gist}`);
+    const rawJson = await raw.json();
+    const gifs = JSON.parse(rawJson.files['gifs.json'].content);
+    const gifsArray = Object.values(gifs) as string[];
+
+    const randomIndex = Math.floor(Math.random() * gifsArray.length);
+    response.redirect(gifsArray[randomIndex]);
+  } catch {
+    response.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+  }
 });
 
 const PORT = process.env.PORT || 4000;
