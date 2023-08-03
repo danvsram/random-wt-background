@@ -15,7 +15,8 @@ app.get('/', async (request: Request, response: Response) => {
   const { gist } = request.query;
 
   try {
-    const raw = await fetch(`https://api.github.com/gists/${gist}`);
+    const defaultGist = '6f8e142615c905989dce6e7f715932d0';
+    const raw = await fetch(`https://api.github.com/gists/${gist || defaultGist}`);
     const rawJson = await raw.json();
     const gifs = JSON.parse(rawJson.files['terminal-backgrounds.json'].content);
     const gifsArray = Object.values(gifs) as string[];
