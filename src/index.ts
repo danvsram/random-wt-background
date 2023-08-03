@@ -17,10 +17,12 @@ app.use(cors());
 
 app.get('/', async (request: Request, response: Response) => {
   const { gist } = request.query;
+  if (!gist) throw new Error('Gist not provided');
 
   try {
-    const defaultGist = '6f8e142615c905989dce6e7f715932d0';
-    const raw = await fetch(`https://api.github.com/gists/${gist || defaultGist}`);
+    const raw = await fetch(`https://api.github.com/gists/${gist}`);
+    if (!raw.ok) throw new Error('Gist invalid or not found');
+
     const rawJson = await raw.json();
     const gifs = JSON.parse(rawJson.files['terminal-backgrounds.json'].content);
     const gifsArray = Object.values(gifs) as string[];
@@ -30,7 +32,7 @@ app.get('/', async (request: Request, response: Response) => {
     const randomIndex = Math.floor(Math.random() * gifsArray.length);
     response.redirect(gifsArray[randomIndex]);
   } catch (error) {
-    logger.error(error);
+    logger.error(`${request.ip} - ${(error as Error).message} - gist: ${String(gist)}`);
     response.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
   }
 });
