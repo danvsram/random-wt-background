@@ -17,6 +17,7 @@ app.use(cors());
 
 app.get('/', async (request: Request, response: Response) => {
   const { gist } = request.query;
+  const ip = request.headers['x-forwarded-for'];
 
   try {
     if (!gist) throw new Error('Gist not provided');
@@ -28,12 +29,12 @@ app.get('/', async (request: Request, response: Response) => {
     const gifs = JSON.parse(rawJson.files['terminal-backgrounds.json'].content);
     const gifsArray = Object.values(gifs) as string[];
 
-    logger.info(`${request.ip} - user: ${rawJson.owner.login} - gist: ${rawJson.html_url}`);
+    logger.info(`${ip} - user: ${rawJson.owner.login} - gist: ${rawJson.html_url}`);
 
     const randomIndex = Math.floor(Math.random() * gifsArray.length);
     response.redirect(gifsArray[randomIndex]);
   } catch (error) {
-    logger.error(`${request.ip} - ${(error as Error).message} - gist: ${String(gist)}`);
+    logger.error(`${ip} - ${(error as Error).message} - gist: ${String(gist)}`);
     response.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
   }
 });
