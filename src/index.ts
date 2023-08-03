@@ -20,7 +20,7 @@ app.get('/', async (request: Request, response: Response) => {
     const gifs = JSON.parse(rawJson.files['gifs.json'].content);
     const gifsArray = Object.values(gifs) as string[];
 
-    logger.info(`user: ${rawJson.owner.login} - gist: ${gist}`);
+    logger.info(`user: ${rawJson.owner.login} - gist: ${rawJson.url}`);
 
     const randomIndex = Math.floor(Math.random() * gifsArray.length);
     response.redirect(gifsArray[randomIndex]);
