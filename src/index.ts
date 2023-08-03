@@ -17,10 +17,10 @@ app.get('/', async (request: Request, response: Response) => {
   try {
     const raw = await fetch(`https://api.github.com/gists/${gist}`);
     const rawJson = await raw.json();
-    const gifs = JSON.parse(rawJson.files['gifs.json'].content);
+    const gifs = JSON.parse(rawJson.files['terminal-backgrounds.json'].content);
     const gifsArray = Object.values(gifs) as string[];
 
-    logger.info(`user: ${rawJson.owner.login} - gist: ${rawJson.url}`);
+    logger.info(`user: ${rawJson.owner.login} - gist: ${rawJson.html_url}`);
 
     const randomIndex = Math.floor(Math.random() * gifsArray.length);
     response.redirect(gifsArray[randomIndex]);
