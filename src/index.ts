@@ -1,6 +1,6 @@
 import cors from 'cors';
 import express, { Request, Response } from 'express';
-import bgs from './bgs.json';
+import bgs from './bgs.json' assert { type: 'json' };
 
 const app = express();
 app.use(cors());
